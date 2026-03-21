@@ -2,7 +2,7 @@
 
 A modern, responsive personal portfolio website built with **React JS**, **Vite**, and **Framer Motion**. Showcases live projects, technical skills, and provides a contact section — designed to make a strong first impression.
 
-🔗 **Live Site:** [View Portfolio](https://your-vercel-link.vercel.app) *(update with your Vercel URL)*
+🔗 **Live Site:** [View Portfolio](https://my-portfolio-seven-delta-80.vercel.app/)
 
 ---
 
