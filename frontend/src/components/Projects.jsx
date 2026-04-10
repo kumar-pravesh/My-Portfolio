@@ -1,9 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Monitor, Activity, Users, ShoppingCart } from 'lucide-react';
+import { ExternalLink, Monitor, Activity, Users, ShoppingCart, Car } from 'lucide-react';
 
 const Projects = () => {
   const projects = [
+    {
+      title: 'Go-Easy — Premium Urban Mobility',
+      image: '/go-easy.png',
+      description: 'A full-stack luxury ride-hailing platform featuring a tiered pricing engine, secure OTP-based handshake protocol, and dedicated real-time dashboards for customers and drivers.',
+      status: 'Live',
+      icon: <Car size={24} />,
+      techStack: ['React', 'Spring Boot', 'PostgreSQL', 'TailwindCSS'],
+      liveLink: 'https://go-easy-woad.vercel.app/',
+    },
     {
       title: 'SiviOn Global Technologies',
       image: '/sivion.jpg',
