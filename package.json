@@ -13,7 +13,7 @@
     "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:admin\"",
     "build:all": "npm run build --workspace=frontend && npm run build --workspace=admin",
     "install:all": "npm install",
-    "prepare": "husky"
+    "prepare": "node .husky/install.js"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
