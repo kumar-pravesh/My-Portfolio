@@ -119,17 +119,6 @@ export default function LoginPage() {
             )}
           </button>
         </form>
-
-        <div className="p-3.5 bg-black/30 rounded-xl border border-white/10 space-y-1">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-            DEFAULT CREDENTIALS
-          </div>
-          <div className="text-xs font-mono text-slate-300">
-            praveshkumar5502@gmail.com
-            <br />
-            Admin@123456
-          </div>
-        </div>
       </div>
     </div>
   );
