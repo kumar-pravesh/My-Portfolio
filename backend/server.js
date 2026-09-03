@@ -49,12 +49,19 @@ const PORT = process.env.PORT || 5000;
 // ── CORS ──────────────────────────────────────────────────────────
 const allowedOrigins = [
   process.env.CORS_ORIGIN || "http://localhost:5173",
-  "http://localhost:5174", // admin app
+  process.env.ADMIN_CORS_ORIGIN || "http://localhost:5174",
 ];
 app.use(
   cors({
     origin: (origin, cb) => {
-      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      if (
+        !origin ||
+        process.env.CORS_ORIGIN === "*" ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        return cb(null, true);
+      }
       cb(new Error("Not allowed by CORS"));
     },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
@@ -129,14 +136,12 @@ app.get("/", (req, res) => res.send("Portfolio API Server is running."));
 // ── Global error handler ──────────────────────────────────────────
 app.use((err, req, res, next) => {
   logger.error({ err }, err.message);
-  res
-    .status(500)
-    .json({
-      error:
-        process.env.NODE_ENV === "production"
-          ? "Internal server error."
-          : err.message,
-    });
+  res.status(500).json({
+    error:
+      process.env.NODE_ENV === "production"
+        ? "Internal server error."
+        : err.message,
+  });
 });
 
 // ── Start ─────────────────────────────────────────────────────────

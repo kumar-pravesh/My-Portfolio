@@ -9,7 +9,8 @@ import axios from "axios";
 
 const AuthContext = createContext(null);
 
-const api = axios.create({ baseURL: "/api" });
+const API_URL = import.meta.env.VITE_API_URL || "/api";
+const api = axios.create({ baseURL: API_URL });
 
 api.interceptors.request.use((cfg) => {
   const token = localStorage.getItem("admin_token");
