@@ -12,6 +12,7 @@
     "dev:admin": "npm run dev --workspace=admin",
     "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:admin\"",
     "build:all": "npm run build --workspace=frontend && npm run build --workspace=admin",
+    "build": "npm run build:all && node -e \"require('fs').cpSync('admin/dist', 'frontend/dist/admin', {recursive: true})\"",
     "install:all": "npm install",
     "prepare": "node .husky/install.js"
   },
