@@ -1,60 +1,87 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Globe, Code, Users, Github } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { publicApi } from "../services/api";
+import ServiceCard from "./ServiceCard";
+import SectionHeader from "./SectionHeader";
 
 const Services = () => {
-  const services = [
-    {
-      icon: <Globe size={40} />,
-      title: 'Web Development',
-      description: 'Building responsive, modern websites using HTML, CSS, JavaScript, and Java. Creating fast, accessible, and SEO-friendly web applications.',
-    },
-    {
-      icon: <Code size={40} />,
-      title: 'Frontend & Backend Integration',
-      description: 'Seamless integration of frontend interfaces with robust backend systems using Java, Spring Boot, and PostgreSQL for full-stack solutions.',
-    },
-    {
-      icon: <Users size={40} />,
-      title: 'Project Collaboration',
-      description: 'Team projects, and real-time collaborative development. Building solutions together with fellow developers.',
-    },
-    {
-      icon: <Github size={40} />,
-      title: 'GitHub Profile Setup',
-      description: 'Professional repository setup with clean documentation, proper README files, and organized project structures.',
-    },
-  ];
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    publicApi
+      .getServices({ featured: "true", limit: 3 })
+      .then((data) => {
+        if (isMounted) {
+          setServices(Array.isArray(data) ? data : data.data || []);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) setError("Unable to load services at this time.");
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!loading && (error || services.length === 0)) return null;
 
   return (
-    <section className="services" id="services">
-      <motion.div 
-        className="services-header"
-        initial={{ opacity: 0, y: -30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-      >
-        <h2 className="heading">My <span>Services</span></h2>
-        <p>Delivering comprehensive web development solutions tailored to your needs</p>
-      </motion.div>
+    <section
+      className="py-14 sm:py-16 px-[5%] lg:px-[9%] max-w-full bg-[#060c18] border-y border-white/[0.06]"
+      id="services"
+    >
+      <SectionHeader
+        badge="Enterprise Services"
+        title="Featured"
+        highlight="Services"
+        subtitle="Solutions designed to help enterprise businesses grow and scale"
+      />
 
-      <div className="services-container">
-        {services.map((service, index) => (
-          <motion.div 
-            key={index} 
-            className="service-card glass"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            whileHover={{ y: -10, borderColor: 'var(--main-color)' }}
-          >
-            <div className="icon">{service.icon}</div>
-            <h3>{service.title}</h3>
-            <p>{service.description}</p>
-          </motion.div>
-        ))}
-      </div>
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3].map((n) => (
+            <div
+              key={n}
+              className="p-8 rounded-3xl bg-[#0b1528] border border-white/5 animate-pulse h-96"
+            />
+          ))}
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.slice(0, 3).map((service, index) => (
+              <motion.div
+                key={service.reference_id || service.id || index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flex"
+              >
+                <ServiceCard service={service} index={index} />
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-8 sm:mt-10">
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-white/5 border border-white/15 text-white text-sm font-semibold hover:border-[#f5a623] hover:text-[#f5a623] transition-all"
+            >
+              Explore All Services <ArrowRight size={15} />
+            </Link>
+          </div>
+        </>
+      )}
     </section>
   );
 };

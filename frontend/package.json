@@ -7,13 +7,22 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "dependencies": {
+    "@splinetool/react-spline": "^3.0.0",
+    "@splinetool/runtime": "^1.9.82",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
     "framer-motion": "^12.38.0",
     "lucide-react": "^0.577.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.18.3",
+    "tailwindcss": "^4.3.3",
+    "three": "^0.185.1",
     "typed.js": "^3.0.0"
   },
   "devDependencies": {

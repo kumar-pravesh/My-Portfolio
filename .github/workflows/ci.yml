@@ -1,0 +1,39 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+        
+    - name: Install Dependencies
+      run: npm install
+      
+    - name: Build Frontend
+      run: npm run build --workspace=frontend
+      
+    - name: Build Admin
+      run: npm run build --workspace=admin
+      
+    - name: Run Backend Tests
+      run: npm run test --workspace=backend
+      
+    - name: Run Frontend Tests
+      run: npm run test --workspace=frontend
+      
+    - name: Run Admin Tests
+      run: npm run test --workspace=admin

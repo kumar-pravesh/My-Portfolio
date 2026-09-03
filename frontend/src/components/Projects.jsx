@@ -1,110 +1,87 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ExternalLink, Monitor, Activity, Users, ShoppingCart, Car } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { FolderKanban } from "lucide-react";
+import { publicApi } from "../services/api";
+import ProjectCard from "./ProjectCard";
+import SectionHeader from "./SectionHeader";
 
 const Projects = () => {
-  const projects = [
-    {
-      title: 'Go-Easy — Premium Urban Mobility',
-      image: '/go-easy.png',
-      description: 'A full-stack luxury ride-hailing platform featuring a tiered pricing engine, secure OTP-based handshake protocol, and dedicated real-time dashboards for customers and drivers.',
-      status: 'Live',
-      icon: <Car size={24} />,
-      techStack: ['React', 'Spring Boot', 'PostgreSQL', 'TailwindCSS'],
-      liveLink: 'https://go-easy-woad.vercel.app/',
-    },
-    {
-      title: 'SiviOn Global Technologies',
-      image: '/sivion.jpg',
-      description: 'A comprehensive corporate web portal serving as the face of SiviOn Global Technologies. Showcases services, company mission, and provides a streamlined interface for clients connecting with the firm.',
-      status: 'Live',
-      icon: <Monitor size={24} />,
-      techStack: ['ReactJS', 'Tailwind CSS', 'Vercel'],
-      liveLink: 'https://sivion-global-technologies.vercel.app/',
-    },
-    {
-      title: 'Clinixa – HMS (Public Web)',
-      image: '/clinixa-public.jpg',
-      description: 'The public-facing portal for Clinixa Hospital Management System. Empowers patients to effortlessly discover hospital services, view specialized doctors, and engage with healthcare resources online.',
-      status: 'Live',
-      icon: <Activity size={24} />,
-      techStack: ['ReactJS', 'Node.js', 'PostgreSQL', 'Render'],
-      liveLink: 'https://clinixa-frontend-sage.vercel.app/',
-    },
-    {
-      title: 'Clinixa – Staff Portal',
-      image: '/clinixa-staff.jpg',
-      description: 'A secure, role-based backend administrative interface. Enables hospital administration and medical staff to manage patient records securely, schedule appointments, and maintain clinical workflows.',
-      status: 'Live',
-      icon: <Users size={24} />,
-      techStack: ['ReactJS', 'JWT', 'PostgreSQL', 'REST API'],
-      liveLink: 'https://clinixa-staff-portal.vercel.app/login',
-    },
-    {
-      title: 'Aapthi Marketing Solutions',
-      image: '/aapthi.jpg',
-      description: 'A dedicated platform for a digital marketing agency, built to showcase their portfolio of campaigns, lead generation strategies, and digital SEO services to prospective high-value clients.',
-      status: 'Live',
-      icon: <ShoppingCart size={24} />,
-      techStack: ['ReactJS', 'CSS3', 'Vite', 'Vercel'],
-      liveLink: 'https://aapthi-marketing-solutions.vercel.app/',
-    }
-  ];
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    let isMounted = true;
+    publicApi
+      .getProjects({ featured: "true", limit: 3 })
+      .then((data) => {
+        if (isMounted) {
+          setProjects(Array.isArray(data) ? data : data.data || []);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setError("Unable to fetch projects at this time.");
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!loading && (error || projects.length === 0)) return null;
 
   return (
-    <section className="projects" id="projects">
-      <div className="projects-header">
-        <motion.h2 
-          className="heading"
-          initial={{ opacity: 0, y: -50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          Latest <span>Projects</span>
-        </motion.h2>
-        <p>Explore my recent work and deployment links</p>
-      </div>
+    <section
+      className="py-14 sm:py-16 px-[5%] lg:px-[9%] max-w-full bg-[#0b1528]"
+      id="projects"
+    >
+      <SectionHeader
+        badge="Production Systems"
+        title="Featured"
+        highlight="Projects"
+        subtitle="Explore enterprise web applications and production deployments"
+      />
 
-      <div className="projects-container">
-        {projects.map((project, index) => (
-          <motion.div 
-            className="project-card"
-            key={index}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-          >
-            <div className="project-image-wrapper">
-              <img src={project.image} alt={project.title} className="project-image" onError={(e) => { e.target.src = 'https://via.placeholder.com/600x400/122240/f5a623?text=Screenshot+Pending'; }} />
-              <div className="status-badge" data-status={project.status.toLowerCase()}>{project.status}</div>
-            </div>
-            
-            <div className="project-content-wrapper">
-              <div className="icon-box">
-                {project.icon}
-              </div>
-              
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              
-              <div className="tags">
-                {project.techStack.map((tech, idx) => (
-                  <span key={idx}>{tech}</span>
-                ))}
-              </div>
-              
-              <div className="project-links">
-                <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink size={18} /> Live Demo
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3].map((n) => (
+            <div
+              key={n}
+              className="bg-[#0b1528] rounded-2xl border border-white/5 animate-pulse h-80 flex flex-col"
+            />
+          ))}
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.slice(0, 3).map((project, index) => (
+              <motion.div
+                key={project.reference_id || project.id || index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flex"
+              >
+                <ProjectCard project={project} index={index} />
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-8 sm:mt-10">
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-2 px-7 py-2.5 rounded-full bg-white/5 border border-white/15 text-white text-sm font-semibold hover:border-[#f5a623] hover:text-[#f5a623] transition-all"
+            >
+              View All Projects <FolderKanban size={16} />
+            </Link>
+          </div>
+        </>
+      )}
     </section>
   );
 };

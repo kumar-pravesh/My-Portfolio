@@ -1,57 +1,80 @@
-# 🚀 Pravesh Kumar — Developer Portfolio
+# 🚀 Pravesh Kumar — Developer Portfolio Monorepo
 
-A modern, responsive personal portfolio website built with **React JS**, **Vite**, and **Framer Motion**. Showcases live projects, technical skills, and provides a contact section — designed to make a strong first impression.
+A modern, full-stack personal portfolio platform built with a modular architecture. It features a public-facing website, a secure admin dashboard for content management (CMS/CRM), and a robust backend API.
 
 🔗 **Live Site:** [View Portfolio](https://my-portfolio-seven-delta-80.vercel.app/)
 
 ---
 
-## ✨ Features
+## 🏛️ Project Architecture
 
-- ⚡ Animated hero section with **Typed.js** role rotator
-- 🎞️ Smooth page animations via **Framer Motion**
-- 📱 Fully **responsive** across all screen sizes
-- 🗂️ Sections: Hero · About · Services · Projects · Contact
-- 🌐 Live project cards with demo links and tech stack tags
-- 📄 Downloadable CV button
+This repository is organized as a monorepo containing three distinct applications:
+
+1. **`frontend/`** (Public Portfolio)
+   - Built with **React 19**, **Vite**, and **Framer Motion**.
+   - Showcases live projects, technical skills, and acts as the main user touchpoint.
+2. **`admin/`** (Admin Dashboard)
+   - A secure React SPA for managing content (Projects, Blogs, Media Library) and CRM (Leads, Contact Messages).
+   - Powered by Tailwind CSS and Recharts for analytics.
+3. **`backend/`** (Node.js API)
+   - Built with **Express.js** and **Neon PostgreSQL**.
+   - Serves dynamic content, handles JWT authentication, Backblaze B2 media storage, and email notifications.
+
+---
+
+## ✨ Key Features
+
+- **Dynamic CMS:** Complete content management for projects, blogs, and case studies.
+- **Media Library:** Fully integrated Backblaze B2 S3-compatible cloud storage for handling large video presentations and assets.
+- **CRM System:** Integrated contact and lead management with email notifications.
+- **Animated UI:** Smooth page transitions and scroll animations via Framer Motion.
+- **Role-Based Access Control:** Secure JWT authentication on the backend.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| React 19 | UI framework |
-| Vite | Build tool & dev server |
-| Framer Motion | Animations |
-| Typed.js | Typewriter effect |
-| Lucide React | Icons |
-| Vanilla CSS | Styling |
-
----
-
-## 📂 Projects Showcased
-
-| Project | Tech | Status |
-|---|---|---|
-| [SiviOn Global Technologies](https://sivion-global-technologies.vercel.app/) | React, Tailwind, Vercel | 🟢 Live |
-| [Clinixa – HMS Public Web](https://clinixa-frontend-sage.vercel.app/) | React, Node.js, PostgreSQL | 🟢 Live |
-| [Clinixa – Staff Portal](https://clinixa-staff-portal.vercel.app/login) | React, JWT, REST API | 🟢 Live |
-| [Aapthi Marketing Solutions](https://aapthi-marketing-solutions.vercel.app/) | React, CSS3, Vite | 🟢 Live |
+- **Frontend / Admin:** React 19, Vite, Tailwind CSS, Vanilla CSS, Framer Motion, Lucide React, Recharts.
+- **Backend:** Node.js, Express, Neon Serverless PostgreSQL.
+- **Storage:** Backblaze B2 (AWS SDK v3 for S3 compatibility).
 
 ---
 
 ## 🚀 Getting Started
 
+### Prerequisites
+
+- Node.js v18+
+- Neon PostgreSQL database
+- Backblaze B2 account (for media storage)
+
+### 1. Setup Backend
+
 ```bash
-# Install dependencies
+cd backend
 npm install
-
-# Start development server
+# Copy .env.example to .env and fill in your database and B2 credentials
+cp .env.example .env
+# Start the backend server (runs on port 5000)
 npm run dev
+```
 
-# Build for production
-npm run build
+### 2. Setup Frontend (Public Site)
+
+```bash
+cd frontend
+npm install
+# Start the frontend dev server (runs on port 5173)
+npm run dev
+```
+
+### 3. Setup Admin Dashboard
+
+```bash
+cd admin
+npm install
+# Start the admin dev server (runs on port 5174)
+npm run dev
 ```
 
 ---
@@ -60,7 +83,5 @@ npm run build
 
 - **GitHub:** [github.com/kumar-pravesh](https://github.com/kumar-pravesh)
 - **LinkedIn:** [linkedin.com/in/pravesh-kumar-38b1422a7](https://www.linkedin.com/in/pravesh-kumar-38b1422a7)
-
----
 
 > Built with ❤️ by Pravesh Kumar
